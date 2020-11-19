@@ -1,0 +1,85 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CSV file upload</title>
+    <link rel="stylesheet"href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <a href="../index.html"> index </a>
+            <h2>File Upload</h2>
+
+            <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${successmessage}">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <strong th:text="${successmessage}"></strong>
+            </div>
+
+            <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${error}">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <strong th:text="${error}"></strong>
+            </div>
+
+            <form action="" th:action="@{'/employees/fileupload'}" th:object="${employee}" method="post" enctype='multipart/form-data'>
+                <div class="form-group">
+                    <label for="fileupload">File Upload (Excel or CSV)</label>
+                    <input type="file" class="form-control" id="file" name="file" th:field="*{file}">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <div class="col-md-8">
+            <br>
+            <a th:href="@{/logout}">
+
+            <button sec:authorize="isAuthenticated()" type="submit" class="btn btn-primary">Logout</button>
+            </a>
+        </div>
+
+        <div class="col-md-12">
+            <h2>All Users</h2>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <td>Id</td>
+                    <td>Date</td>
+                    <td>Name</td>
+                    <td>Start Time</td>
+                    <td>End Time</td>
+                    <td>Shift</td>
+                </tr>
+                </thead>
+                <tr th:each="employee: ${employeeList}">
+                    <td th:text="${employee.getEmployeeId()}"></td>
+                    <td th:text="${employee.getSchedule().getDate()}"></td>
+                    <td th:text="${employee.getName()}"></td>
+                    <td th:text="${employee.getSchedule().getStartTime()}"></td>
+                    <td th:text="${employee.getSchedule().getEndTime()}"></td>
+                    <td th:text="${employee.getSchedule().getShiftName()}"></td>
+                </tr>
+                <tbody>
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</body>
+</html>
